@@ -16,7 +16,7 @@
     </parent>
 
     <properties>
-        <java.version>11</java.version> <!-- Set your Java version -->
+        <java.version>17</java.version> <!-- Updated Java version to 17 -->
     </properties>
 
     <dependencies>
@@ -58,8 +58,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version> <!-- Change the version to 3.8.1 -->
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <source>17</source> <!-- Update source to Java 17 -->
+                    <target>17</target> <!-- Update target to Java 17 -->
                 </configuration>
             </plugin>
             <!-- Selenium Maven Plugin -->
@@ -102,5 +102,3 @@
         </plugins>
     </build>
 </project>
-
-          
