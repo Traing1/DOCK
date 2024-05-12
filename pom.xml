@@ -16,7 +16,6 @@
 
     <properties>
         <java.version>11</java.version> <!-- Set your Java version -->
-        <mongo.java.driver.version>4.4.6</mongo.java.driver.version> <!-- Add MongoDB driver version -->
     </properties>
 
     <dependencies>
@@ -34,7 +33,7 @@
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
-            <version>${mongo.java.driver.version}</version> <!-- Use property for version -->
+            <version>4.4.6</version> <!-- Specify the version here -->
         </dependency>
     </dependencies>
 
@@ -45,7 +44,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <release>${java.version}</release> <!-- Use property for Java version -->
+                    <release>11</release>
                 </configuration>
             </plugin>
             <!-- Maven Spring Boot Plugin -->
