@@ -7,8 +7,15 @@
     <name>spring-boot-mongo-demo</name>
     <description>Demo project for Spring Boot with MongoDB</description>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.6.4</version> <!-- Replace with the latest Spring Boot version -->
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
     <properties>
-        <java.version>11</java.version>
+        <java.version>11</java.version> <!-- Set your Java version -->
     </properties>
 
     <dependencies>
@@ -26,47 +33,70 @@
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
-            <version>3.12.10</version> <!-- Corrected version -->
+            <version>3.12.10</version> <!-- Change the version to 3.12.10 -->
+        </dependency>
+        <!-- Selenium WebDriver -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>3.141.59</version> <!-- Change the version to 3.141.59 -->
         </dependency>
     </dependencies>
 
     <build>
-        <sourceDirectory>src/main/java</sourceDirectory>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-        </resources>
-        <testSourceDirectory>src/test/java</testSourceDirectory>
-        <testResources>
-            <testResource>
-                <directory>src/test/resources</directory>
-            </testResource>
-        </testResources>
         <plugins>
-            <!-- Maven Compiler Plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
             <!-- Maven Spring Boot Plugin -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.6.4</version> <!-- Change the version to 2.6.4 -->
             </plugin>
-            <!-- Maven JAR Plugin -->
+            <!-- Maven Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.2</version>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version> <!-- Change the version to 3.8.1 -->
                 <configuration>
-                    <outputDirectory>${project.build.directory}</outputDirectory>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
+            </plugin>
+            <!-- Selenium Maven Plugin -->
+            <plugin>
+                <groupId>org.seleniumhq.selenium</groupId>
+                <artifactId>selenium-maven-plugin</artifactId>
+                <version>3.141.59</version> <!-- Change the version to 3.141.59 -->
+                <executions>
+                    <execution>
+                        <id>start-selenium-server</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>start-server</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>stop-selenium-server</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop-server</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Nexus Deployment Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>3.0.0-M1</version> <!-- Change the version to 3.0.0-M1 -->
+                <configuration>
+                    <altDeploymentRepository>internal.repo::default::http://nexus.example.com/repository/maven-releases/</altDeploymentRepository>
+                </configuration>
+            </plugin>
+            <!-- SonarQube Scanner Plugin -->
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.9.0.2155</version> <!-- Change the version to 3.9.0.2155 -->
             </plugin>
         </plugins>
     </build>
