@@ -1,0 +1,62 @@
+
+#!/bin/bash
+
+# Update and install required packages
+sudo apt-get update -y
+sudo apt-get install -y openjdk-11-jdk wget unzip
+
+# Create a dedicated user for SonarQube
+sudo useradd -m -d /opt/sonarqube -r -s /bin/bash sonarqube
+
+# Check if the SonarQube directory already exists and remove it if necessary
+if [ -d /opt/sonarqube ]; then
+    sudo rm -rf /opt/sonarqube
+fi
+
+# Download and install SonarQube
+SONARQUBE_VERSION=9.6.1.59531
+cd /opt
+sudo wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-$SONARQUBE_VERSION.zip
+sudo unzip sonarqube-$SONARQUBE_VERSION.zip
+sudo mv sonarqube-$SONARQUBE_VERSION sonarqube
+sudo chown -R sonarqube:sonarqube /opt/sonarqube
+
+# Configure SonarQube to run as a service
+sudo bash -c 'cat <<EOF > /etc/systemd/system/sonarqube.service
+[Unit]
+Description=SonarQube service
+After=syslog.target network.target
+
+[Service]
+Type=forking
+
+ExecStart=/opt/sonarqube/bin/linux-x86-64/sonar.sh start
+ExecStop=/opt/sonarqube/bin/linux-x86-64/sonar.sh stop
+
+User=sonarqube
+Group=sonarqube
+Restart=always
+LimitNOFILE=65536
+LimitNPROC=4096
+
+[Install]
+WantedBy=multi-user.target
+EOF'
+
+# Reload systemd manager configuration
+sudo systemctl daemon-reload
+
+# Increase virtual memory
+sudo sysctl -w vm.max_map_count=262144
+echo 'vm.max_map_count=262144' | sudo tee -a /etc/sysctl.conf
+
+# Start and enable SonarQube service
+sudo systemctl start sonarqube
+sudo systemctl enable sonarqube
+
+# Open necessary ports in the firewall
+sudo ufw allow 9000/tcp
+
+echo "SonarQube installation and configuration completed."
+echo "You can access SonarQube at http://your_instance_public_ip:9000"
+
